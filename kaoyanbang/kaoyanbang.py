@@ -6,6 +6,7 @@ import time
 from appium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
+from utils.helper import get_size
 
 cap = {
     "platformName": "Android",
@@ -18,12 +19,6 @@ cap = {
 }
 
 driver = webdriver.Remote("http://localhost:4723/wd/hub", cap)
-
-
-def get_size():
-    width = driver.get_window_size()["width"]
-    height = driver.get_window_size()["height"]
-    return width, height
 
 
 try:
@@ -59,7 +54,7 @@ if WebDriverWait(driver, 3).until(lambda x: x.find_element_by_xpath(
     time.sleep(1)
 
     # 手势滑动
-    wid, hei = get_size()
+    wid, hei = get_size(driver)
 
     x1 = int(wid * 0.5)
     y1 = int(hei * 0.75)
