@@ -117,10 +117,12 @@ class DouYin:
         print('点击粉丝，进入粉丝列表')
         if WebDriverWait(self.driver, 3).until(lambda x: x.find_element_by_id('com.ss.android.ugc.aweme:id/aew')):
             self.driver.find_element_by_id('com.ss.android.ugc.aweme:id/aew').click()
+            for i in range(48):
+                self.load_more_data()
 
     def get_current_fans_list(self):
         try:
-            if WebDriverWait(self.driver, 2).until(
+            if WebDriverWait(self.driver, 3).until(
                     lambda x: x.find_elements_by_xpath(
                         "//android.support.v7.widget.RecyclerView[@resource-id='com.ss.android.ugc.aweme:id/cd0']/android.widget.RelativeLayout")):
                 print('获取当前所有粉丝')
@@ -137,12 +139,16 @@ class DouYin:
         while i < len(all_fans):
             try:
                 fans = all_fans[i]
-                if fans.find_element_by_id('com.ss.android.ugc.aweme:id/av4'):
+                if WebDriverWait(self.driver, 3).until(lambda x: x.find_element_by_id('com.ss.android.ugc.aweme:id/av4')):
                     print('点击粉丝')
-                    fans.click()
+                    fans.find_element_by_id('com.ss.android.ugc.aweme:id/av4').click()
+                    time.sleep(1)
                     self.click_more()
+                    time.sleep(1)
                     self.click_private_mail()
+                    time.sleep(1)
                     self.send_message("关注公众号夏芒铺子，更多母婴知识好物分享，欢迎来撩")
+                    time.sleep(1)
                     self.go_back_fans_list()
                     i += 1
 
@@ -160,13 +166,13 @@ class DouYin:
     def click_more(self):
         # 点击更多...
         print('点击更多...')
-        if WebDriverWait(self.driver, 2).until(lambda x: x.find_element_by_id('com.ss.android.ugc.aweme:id/cwo')):
+        if WebDriverWait(self.driver, 3).until(lambda x: x.find_element_by_id('com.ss.android.ugc.aweme:id/cwo')):
             self.driver.find_element_by_id('com.ss.android.ugc.aweme:id/cwo').click()
 
     def click_private_mail(self):
         # 点击私信
         print('点击私信')
-        if WebDriverWait(self.driver, 2).until(lambda x: x.find_element_by_id('com.ss.android.ugc.aweme:id/chq')):
+        if WebDriverWait(self.driver, 3).until(lambda x: x.find_element_by_id('com.ss.android.ugc.aweme:id/chq')):
             self.driver.find_element_by_id('com.ss.android.ugc.aweme:id/chq').click()
             time.sleep(1)
             # 如果要求安装多闪，点击取消
@@ -178,20 +184,20 @@ class DouYin:
 
     def send_message(self, msg):
         # 发送私信
-        print('发送私信：{}'.format(msg))
         self.driver.find_element_by_id('com.ss.android.ugc.aweme:id/biw').click()
         self.driver.find_element_by_id('com.ss.android.ugc.aweme:id/biw').send_keys(msg)
         if WebDriverWait(self.driver, 2).until(lambda x: x.find_element_by_id('com.ss.android.ugc.aweme:id/chh')):
+            print('发送私信：{}'.format(msg))
             self.driver.find_element_by_id('com.ss.android.ugc.aweme:id/chh').click()
             time.sleep(1)
 
     def go_back_fans_list(self):
-        print('------返回到粉丝列表------')
         self.driver.find_element_by_id('com.ss.android.ugc.aweme:id/b7j').click()
         if WebDriverWait(self.driver, 1).until(lambda x: x.find_element_by_id('com.ss.android.ugc.aweme:id/iy')):
             self.driver.find_element_by_id('com.ss.android.ugc.aweme:id/iy').click()
         if WebDriverWait(self.driver, 1).until(lambda x: x.find_element_by_id('com.ss.android.ugc.aweme:id/iy')):
             self.driver.find_element_by_id('com.ss.android.ugc.aweme:id/iy').click()
+        print('------返回到粉丝列表------')
 
     def load_more_data(self):
         # 手势滑动
@@ -200,19 +206,20 @@ class DouYin:
         wid, hei = get_size(self.driver)
         x1 = int(wid * 0.5)
         y1 = int(hei * 0.95)
-        y2 = int(hei * 0.15)
+        y2 = int(hei * 0.2)
 
         self.driver.swipe(x1, y1, x1, y2)
-        time.sleep(2)
+        time.sleep(3)
 
 
 if __name__ == '__main__':
     douyin = DouYin()
     douyin.click_search()
     douyin.if_need_click_teenage_alert()
-    douyin.input_and_search('1536191927')
+    douyin.input_and_search('daddylab')
     douyin.click_user_tab()
-    douyin.select_one_user('1536191927')
+    douyin.select_one_user('daddylab')
     douyin.click_fans_tab()
     douyin.get_current_fans_list()
 
+# daddylab
